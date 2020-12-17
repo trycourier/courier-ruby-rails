@@ -36,8 +36,11 @@ module CourierRails
     end
 
     def prepare_event_from courier_data
-      ## TODO: Should error if event is not provided
-      @payload["event"] = courier_data[:event]
+      if courier_data.has_key?(:event)
+        @payload["event"] = courier_data[:event]
+      else
+        raise Exception.new "Must specify :event key in courier_data."
+      end
     end
 
     def prepare_recipient_from mail, courier_data
