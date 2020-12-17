@@ -18,6 +18,7 @@ module CourierRails
       prepare_recipient_from mail, courier_data
       prepare_profile_from mail, courier_data
       prepare_data_from courier_data
+      prepare_brand_from courier_data
 
       result = perfom_send_request
 
@@ -69,6 +70,12 @@ module CourierRails
     def prepare_data_from courier_data
       if courier_data.has_key?(:data)
         @payload["data"] = courier_data[:data]
+      end
+    end
+
+    def prepare_brand_from courier_data
+      if courier_data.has_key?(:brand)
+        @payload["brand"] = courier_data[:brand]
       end
     end
 
