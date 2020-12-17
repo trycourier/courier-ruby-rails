@@ -58,7 +58,9 @@ module CourierRails
         profile["email"] = mail.to.first
       end
 
-      @payload["profile"] = profile
+      if !profile.empty?
+        @payload["profile"] = profile
+      end
     end
 
     def prepare_data_from courier_data
