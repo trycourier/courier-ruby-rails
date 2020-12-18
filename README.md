@@ -85,8 +85,8 @@ When calling the `deliver!` method on the mail object returned from your mailer.
 
 ```ruby
 result = MyMailer.welcome_message(user).deliver!
-puts result.code // Status Code
-puts result.message_id // Message ID
+puts result.code # Status Code
+puts result.message_id # Message ID
 ```
 
 ## Development

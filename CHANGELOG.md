@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## v0.1.3 - 2020-12-17
+
 Initial release.
 
-[unreleased]: https://github.com/trycourier/courier-ruby-rails/compare/HEAD...HEAD
+[unreleased]: https://github.com/trycourier/courier-ruby-rails/compare/v0.1.3...HEAD
