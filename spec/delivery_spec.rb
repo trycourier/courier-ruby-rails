@@ -7,7 +7,7 @@ describe CourierRails::DeliveryMethod do
 
   context "Event" do
     it "accepts the event to use" do
-      test_email = Mailer.test_email courier_data: { event: "TEST_EVENT" }
+      test_email = Mailer.test_email courier_data: {event: "TEST_EVENT"}
 
       @delivery_method.deliver!(test_email)
 
@@ -23,7 +23,7 @@ describe CourierRails::DeliveryMethod do
 
   context "Recipient" do
     it "accepts the recipient to use" do
-      test_email = Mailer.test_email courier_data: { event: "TEST_EVENT", recipient: "TEST_RECIPIENT" }
+      test_email = Mailer.test_email courier_data: {event: "TEST_EVENT", recipient: "TEST_RECIPIENT"}
 
       @delivery_method.deliver!(test_email)
 
@@ -31,7 +31,7 @@ describe CourierRails::DeliveryMethod do
     end
 
     it "generates a recipient if not provided" do
-      test_email = Mailer.test_email courier_data: { event: "TEST_EVENT" }
+      test_email = Mailer.test_email courier_data: {event: "TEST_EVENT"}
 
       @delivery_method.deliver!(test_email)
 
@@ -41,7 +41,7 @@ describe CourierRails::DeliveryMethod do
 
   context "Profile" do
     it "accepts the profile to use" do
-      test_email = Mailer.test_email courier_data: { event: "TEST_EVENT", profile: { phone_number: "555-555-5555" } }
+      test_email = Mailer.test_email courier_data: {event: "TEST_EVENT", profile: {phone_number: "555-555-5555"}}
 
       @delivery_method.deliver!(test_email)
 
@@ -49,7 +49,7 @@ describe CourierRails::DeliveryMethod do
     end
 
     it "accepts to as email in profile" do
-      test_email = Mailer.test_email to: "to@example.com", courier_data: { event: "TEST_EVENT" }
+      test_email = Mailer.test_email to: "to@example.com", courier_data: {event: "TEST_EVENT"}
 
       @delivery_method.deliver!(test_email)
 
@@ -59,7 +59,7 @@ describe CourierRails::DeliveryMethod do
 
   context "Data" do
     it "accepts the data to use" do
-      test_email = Mailer.test_email courier_data: { event: "TEST_EVENT", data: { hello: "test" } }
+      test_email = Mailer.test_email courier_data: {event: "TEST_EVENT", data: {hello: "test"}}
 
       @delivery_method.deliver!(test_email)
 
@@ -69,7 +69,7 @@ describe CourierRails::DeliveryMethod do
 
   context "Brand" do
     it "accepts the brand to use" do
-      test_email = Mailer.test_email courier_data: { event: "TEST_EVENT", brand: "TEST_BRAND" }
+      test_email = Mailer.test_email courier_data: {event: "TEST_EVENT", brand: "TEST_BRAND"}
 
       @delivery_method.deliver!(test_email)
 

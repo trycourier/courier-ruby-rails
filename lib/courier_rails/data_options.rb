@@ -1,6 +1,5 @@
 module CourierRails
   module DataOptions
-
     def self.included(base)
       base.class_eval do
         prepend InstanceMethods
@@ -8,8 +7,7 @@ module CourierRails
     end
 
     module InstanceMethods
-
-      def mail(headers={}, &block)
+      def mail(headers = {}, &block)
         headers = headers.clone
         courier_data = headers.delete(:courier_data)
         courier_data ||= {}
@@ -18,8 +16,6 @@ module CourierRails
           message.courier_data = courier_data
         end
       end
-      
     end
-
   end
 end

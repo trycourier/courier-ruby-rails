@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative "courier_rails/data_options"
 require_relative "courier_rails/delivery_method"
 require_relative "courier_rails/railtie"
@@ -26,10 +27,10 @@ module CourierRails
     end
 
     def set_defaults
-      if ENV.has_key?("COURIER_AUTH_TOKEN")
-        @api_key = ENV["COURIER_AUTH_TOKEN"]
+      @api_key = if ENV.has_key?("COURIER_AUTH_TOKEN")
+        ENV["COURIER_AUTH_TOKEN"]
       else
-        @api_key = ""
+        ""
       end
     end
   end

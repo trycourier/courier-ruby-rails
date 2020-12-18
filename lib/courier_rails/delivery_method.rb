@@ -20,9 +20,7 @@ module CourierRails
       prepare_data_from courier_data
       prepare_brand_from courier_data
 
-      result = perfom_send_request
-
-      result
+      perfom_send_request
     end
 
     private
@@ -40,16 +38,16 @@ module CourierRails
       if courier_data.has_key?(:event)
         @payload["event"] = courier_data[:event]
       else
-        raise Exception, "Must specify :event key in courier_data."
+        raise StandardError, "Must specify :event key in courier_data."
       end
     end
 
     def prepare_recipient_from(_mail, courier_data)
       @payload["recipient"] = if courier_data.has_key?(:recipient)
-                                courier_data[:recipient]
-                              else
-                                SecureRandom.uuid
-                              end
+        courier_data[:recipient]
+      else
+        SecureRandom.uuid
+      end
     end
 
     def prepare_profile_from(mail, courier_data)
@@ -70,9 +68,7 @@ module CourierRails
     end
 
     def perfom_send_request
-      result = client.send(@payload)
-
-      result
+      client.send(@payload)
     end
   end
 end

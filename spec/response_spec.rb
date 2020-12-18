@@ -8,7 +8,7 @@ describe CourierRails::DeliveryMethod do
 
   context "API Response Handling" do
     it "returns result data on success" do
-      test_email = Mailer.test_email to: "to@example.com", courier_data: { event: "EVENT_ID" }
+      test_email = Mailer.test_email to: "to@example.com", courier_data: {event: "EVENT_ID"}
       response = @delivery_method.deliver!(test_email)
 
       expect(response.code).to eq(200)
@@ -20,7 +20,7 @@ describe CourierRails::DeliveryMethod do
       stub_request(:any, uri.to_s)
         .to_return(body: "{\"message\":\"Error Message\",\"type\":\"invalid_request_error\"}", status: 400)
 
-      test_email = Mailer.test_email courier_data: { event: "EVENT_ID" }
+      test_email = Mailer.test_email courier_data: {event: "EVENT_ID"}
 
       expect { @delivery_method.deliver!(test_email) }.to raise_exception(Courier::ResponseError)
     end
