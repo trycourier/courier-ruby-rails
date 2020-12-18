@@ -17,7 +17,7 @@ describe CourierRails::DeliveryMethod do
     it "raises exception if event is missing" do
       test_email = Mailer.test_email
 
-      expect { @delivery_method.deliver!(test_email) }.to raise_exception(Exception)
+      expect { @delivery_method.deliver!(test_email) }.to raise_exception(StandardError)
     end
   end
 
