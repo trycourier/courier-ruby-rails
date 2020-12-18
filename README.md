@@ -20,9 +20,55 @@ Or install it yourself as:
 
     $ gem install courier_rails
 
-## Usage
+## Configuration
+Create a Courier Authentication Token for your application. By default, the gem will look for this key in your environment, under the  variable `COURIER_AUTH_TOKEN`. You can override this key by setting it manually in the file `config/initializers/courier_rails.rb`:
 
-TODO: Write usage instructions here
+```ruby
+CourierRails.configure do |c|
+  c.api_key = 'your-auth-token'
+end
+```
+
+Then, edit `config/application.rb` or `config/environments/$ENVIRONMENT.rb` and add/change the following to the ActionMailer configuration:
+
+```ruby
+config.action_mailer.delivery_method = :courier_rails
+```
+
+## Usage
+Normal ActionMailer usage will now send notifications from the Courier template designer, using the Courier API:
+```ruby
+mail(to: "jane@doe.com", body: "not used", courier_data:data)
+```
+
+The "body" parameter is required for ActionMailer, even though the email body is already described by the notification designer. You can also add ```default body: not used``` to the top of your mailer instead of this parameter.
+
+The elements of "courier_data" are described below:
+
+### event (required)
+The unique identification key of a template to be sent. If the notification is mapped to an event key, use the event key here instead.
+
+### recipient (optional)
+The unique identification key attached to a recipient and their profile. If empty, the code will auto-generate a unique key. 
+
+### profile (optional)
+An object that includes the profile data attached to this message. For example,
+```ruby
+c_data={
+    event: "your.event.key"
+    profile:{
+        phone_number: "555-123-4567",
+        name: "Jane Doe"
+        email: "jane@doe.com"
+        ...
+    }
+}
+mail(body: "not used", courier_data: c_data)
+```
+As shown above, the recipient's email can be set inside of the profile instead of using the ActionMailer ```to:"email"``` parameter. When both are used, however, the "to" parameter overrides the profile email.
+
+### data (optional)
+An object that includes any data you want to pass to a Courier template. The data will populate the corresponding template variables.
 
 ## Development
 
