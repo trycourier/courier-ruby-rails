@@ -32,51 +32,41 @@ module CourierRails
       @client = Courier::Client.new CourierRails.configuration.api_key
     end
 
-    def find_courier_data_from mail
+    def find_courier_data_from(mail)
       mail.courier_data
     end
 
-    def prepare_event_from courier_data
+    def prepare_event_from(courier_data)
       if courier_data.has_key?(:event)
         @payload["event"] = courier_data[:event]
       else
-        raise Exception.new "Must specify :event key in courier_data."
+        raise Exception, "Must specify :event key in courier_data."
       end
     end
 
-    def prepare_recipient_from mail, courier_data
-      if courier_data.has_key?(:recipient)
-        @payload["recipient"] = courier_data[:recipient]
-      else
-        @payload["recipient"] = SecureRandom.uuid
-      end
+    def prepare_recipient_from(_mail, courier_data)
+      @payload["recipient"] = if courier_data.has_key?(:recipient)
+                                courier_data[:recipient]
+                              else
+                                SecureRandom.uuid
+                              end
     end
 
-    def prepare_profile_from mail, courier_data
+    def prepare_profile_from(mail, courier_data)
       profile = {}
-      if courier_data.has_key?(:profile)
-        profile = courier_data[:profile]
-      end
+      profile = courier_data[:profile] if courier_data.has_key?(:profile)
 
-      if !mail.to.nil?
-        profile["email"] = mail.to.first
-      end
+      profile[:email] = mail.to.first unless mail.to.nil?
 
-      if !profile.empty?
-        @payload["profile"] = profile
-      end
+      @payload["profile"] = profile unless profile.empty?
     end
 
-    def prepare_data_from courier_data
-      if courier_data.has_key?(:data)
-        @payload["data"] = courier_data[:data]
-      end
+    def prepare_data_from(courier_data)
+      @payload["data"] = courier_data[:data] if courier_data.has_key?(:data)
     end
 
-    def prepare_brand_from courier_data
-      if courier_data.has_key?(:brand)
-        @payload["brand"] = courier_data[:brand]
-      end
+    def prepare_brand_from(courier_data)
+      @payload["brand"] = courier_data[:brand] if courier_data.has_key?(:brand)
     end
 
     def perfom_send_request
@@ -84,6 +74,5 @@ module CourierRails
 
       result
     end
-
   end
 end
