@@ -7,7 +7,7 @@ require_relative "courier_rails/version"
 
 module CourierRails
   class << self
-    attr_accessor :configuration
+    attr_writer :configuration
   end
 
   def self.configuration
