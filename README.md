@@ -81,6 +81,14 @@ As shown above, the recipient's email can be set inside of the profile instead o
 
 An object that includes any data you want to pass to a Courier template. The data will populate the corresponding template variables.
 
+When calling the `deliver!` method on the mail object returned from your mailer. `CourierRails` provides the response data directly back from Courier in a `Courier::SendResponse` object.
+
+```ruby
+result = MyMailer.welcome_message(user).deliver!
+puts result.code // Status Code
+puts result.message_id // Message ID
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
