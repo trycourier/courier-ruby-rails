@@ -30,7 +30,15 @@ describe CourierRails::DeliveryMethod do
       expect(@delivery_method.payload["recipient"]).to eq("TEST_RECIPIENT")
     end
 
-    it "generates a recipient if not provided" do
+    it "uses email from to if not provided" do
+      test_email = Mailer.test_email to: "to@example.com", courier_data: {event: "TEST_EVENT"}
+
+      @delivery_method.deliver!(test_email)
+
+      expect(@delivery_method.payload["recipient"]).to eq("to@example.com")
+    end
+
+    it "generates a recipient if not provided and no to" do
       test_email = Mailer.test_email courier_data: {event: "TEST_EVENT"}
 
       @delivery_method.deliver!(test_email)
