@@ -44,7 +44,7 @@ module CourierRails
 
     def prepare_recipient_from(mail, courier_data)
       @payload["recipient"] = if courier_data.has_key?(:recipient)
-        courier_data[:recipient]
+        courier_data[:recipient].to_s
       elsif !mail.to.nil?
         mail.to.first
       else

@@ -30,6 +30,14 @@ describe CourierRails::DeliveryMethod do
       expect(@delivery_method.payload["recipient"]).to eq("TEST_RECIPIENT")
     end
 
+    it "converts provided recipient to a string" do
+      test_email = Mailer.test_email courier_data: {event: "TEST_EVENT", recipient: 12345}
+
+      @delivery_method.deliver!(test_email)
+
+      expect(@delivery_method.payload["recipient"]).to eq("12345")
+    end
+
     it "uses email from to if not provided" do
       test_email = Mailer.test_email to: "to@example.com", courier_data: {event: "TEST_EVENT"}
 
