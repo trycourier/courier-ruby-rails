@@ -56,7 +56,7 @@ The unique identification key of a notification template to be sent. If the noti
 
 ### recipient (optional)
 
-The unique identification key attached to a recipient and their profile. If empty, the code will auto-generate a unique key.
+The unique identification key attached to a recipient and their profile. The value should be a string, all other values will be converted to a string. If empty, the code will either use the email provided in the to or auto-generate a unique key.
 
 ### profile (optional)
 

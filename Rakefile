@@ -7,6 +7,4 @@ RSpec::Core::RakeTask.new(:spec)
 
 require "standard/rake"
 
-RuboCop::RakeTask.new
-
 task default: %i[spec standard]
