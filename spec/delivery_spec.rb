@@ -92,4 +92,66 @@ describe CourierRails::DeliveryMethod do
       expect(@delivery_method.payload["brand"]).to eq("TEST_BRAND")
     end
   end
+
+  context "Override" do
+    it "will use the provided subject" do
+      test_email = Mailer.test_email subject: "Test Subject", courier_data: {event: "TEST_EVENT"}
+
+      @delivery_method.deliver!(test_email)
+
+      expect(@delivery_method.payload[:override][:channel][:email][:subject]).to eq("Test Subject")
+    end
+
+    it "will use the provided cc address" do
+      test_email = Mailer.test_email cc: "test@example.com", courier_data: {event: "TEST_EVENT"}
+
+      @delivery_method.deliver!(test_email)
+
+      expect(@delivery_method.payload[:override][:channel][:email][:cc]).to eq("test@example.com")
+    end
+
+    it "will use the provided bcc address" do
+      test_email = Mailer.test_email bcc: "test@example.com", courier_data: {event: "TEST_EVENT"}
+
+      @delivery_method.deliver!(test_email)
+
+      expect(@delivery_method.payload[:override][:channel][:email][:bcc]).to eq("test@example.com")
+    end
+
+    it "will use the provided from address" do
+      test_email = Mailer.test_email from: "test@example.com", courier_data: {event: "TEST_EVENT"}
+
+      @delivery_method.deliver!(test_email)
+
+      expect(@delivery_method.payload[:override][:channel][:email][:from]).to eq("test@example.com")
+    end
+
+    it "will use the provided reply-to address" do
+      test_email = Mailer.test_email reply_to: "test@example.com", courier_data: {event: "TEST_EVENT"}
+
+      @delivery_method.deliver!(test_email)
+
+      expect(@delivery_method.payload[:override][:channel][:email][:replyTo]).to eq("test@example.com")
+    end
+
+    it "will use the provided html erb template" do
+      test_email = Mailer.test_email html_part: "<h1>Hello, Testing!</h1>", courier_data: {event: "TEST_EVENT"}
+
+      puts test_email
+
+      @delivery_method.deliver!(test_email)
+
+      puts @delivery_method.payload[:override]
+
+      expect(@delivery_method.payload[:override][:channel][:email][:html]).to eq("<h1>Hello, Testing!</h1>")
+    end
+
+    it "will use the provided text erb template" do
+      test_email = Mailer.test_email text_part: "Hello, Testing!", courier_data: {event: "TEST_EVENT"}
+
+      @delivery_method.deliver!(test_email)
+
+      expect(@delivery_method.payload[:override][:channel][:email][:text]).to eq("Hello, Testing!")
+    end
+  end
 end
