@@ -16,7 +16,7 @@ describe CourierRails::DeliveryMethod do
     end
 
     it "raises exception on error" do
-      uri = URI.join("https://api.trycourier.app/", "send")
+      uri = URI.join("https://api.courier.com/", "send")
       stub_request(:any, uri.to_s)
         .to_return(body: "{\"message\":\"Error Message\",\"type\":\"invalid_request_error\"}", status: 400)
 

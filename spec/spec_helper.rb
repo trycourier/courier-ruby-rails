@@ -18,7 +18,7 @@ RSpec.configure do |config|
         c.api_key = "TESTAUTHTOKEN1234"
       end
     end
-    uri = URI.join("https://api.trycourier.app/", "send") # Future base endpoint will be configurable
+    uri = URI.join("https://api.courier.com/", "send") # Future base endpoint will be configurable
     stub_request(:any, uri.to_s)
       .to_return(body: "{\"messageId\": \"1-5e2b2615-05efbb3acab9172f88dd3f6f\"}", status: 200)
   end
