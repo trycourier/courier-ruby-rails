@@ -32,7 +32,7 @@ Gem::Specification.new do |spec|
   # Uncomment to register a new dependency of your gem
   # spec.add_dependency "example-gem", "~> 1.0"
   # spec.add_dependency "rails", ">= 4.0", "< 6.1"
-  spec.add_dependency "rails", "~> 6.1.0"
+  spec.add_dependency "rails", "~> 6.0.0"
   spec.add_dependency "trycourier"
 
   spec.add_development_dependency "rspec", "~> 3.2"
