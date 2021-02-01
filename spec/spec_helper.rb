@@ -29,6 +29,23 @@ class Mailer < ActionMailer::Base
   default body: "not used"
 
   def test_email(options = {})
-    mail(options)
+    data = {}
+
+    data.merge! options
+
+    if data.has_key?(:html_part) && data.has_key?(:text_part)
+      mail(data) do |format|
+        format.text { render plain: data[:text_part] }
+        format.html { render plain: data[:html_part] }
+      end
+    elsif data.has_key?(:html_part)
+      mail(data) do |format|
+        format.html { render plain: data[:html_part] }
+      end
+    elsif data.has_key?(:text_part)
+      mail(data) do |format|
+        format.text { render plain: data[:text_part] }
+      end
+    end
   end
 end
