@@ -29,23 +29,21 @@ class Mailer < ActionMailer::Base
   default body: "not used"
 
   def test_email(options = {})
-    data = {}
-
-    data.merge! options
-
-    if data.has_key?(:html_part) && data.has_key?(:text_part)
-      mail(data) do |format|
-        format.text { render plain: data[:text_part] }
-        format.html { render plain: data[:html_part] }
+    if options.has_key?(:html_part) && options.has_key?(:text_part)
+      mail(options) do |format|
+        format.text { render plain: options[:text_part] }
+        format.html { render plain: options[:html_part] }
       end
-    elsif data.has_key?(:html_part)
-      mail(data) do |format|
-        format.html { render plain: data[:html_part] }
+    elsif options.has_key?(:html_part)
+      mail(options) do |format|
+        format.html { render plain: options[:html_part] }
       end
-    elsif data.has_key?(:text_part)
-      mail(data) do |format|
-        format.text { render plain: data[:text_part] }
+    elsif options.has_key?(:text_part)
+      mail(options) do |format|
+        format.text { render plain: options[:text_part] }
       end
+    else
+      mail(options)
     end
   end
 end
