@@ -1,24 +1,24 @@
 require_relative "spec_helper"
 
 describe CourierRails::DeliveryMethod do
-  before(:each) do
-    @delivery_method = CourierRails::DeliveryMethod.new
-  end
+  # before(:each) do
+  #   @delivery_method = CourierRails::DeliveryMethod.new
+  # end
+  let(:delivery_method) { CourierRails::DeliveryMethod.new }
 
   context "Event" do
     it "accepts the event to use" do
       test_email = Mailer.test_email courier_data: {event: "TEST_EVENT"}
 
-      @delivery_method.deliver!(test_email)
-      puts @delivery_method.payload[:override]
+      delivery_method.deliver!(test_email)
 
-      expect(@delivery_method.payload["event"]).to eq("TEST_EVENT")
+      expect(delivery_method.payload["event"]).to eq("TEST_EVENT")
     end
 
     it "raises exception if event is missing" do
       test_email = Mailer.test_email
 
-      expect { @delivery_method.deliver!(test_email) }.to raise_exception(StandardError)
+      expect { delivery_method.deliver!(test_email) }.to raise_exception(StandardError)
     end
   end
 
@@ -26,33 +26,33 @@ describe CourierRails::DeliveryMethod do
     it "accepts the recipient to use" do
       test_email = Mailer.test_email courier_data: {event: "TEST_EVENT", recipient: "TEST_RECIPIENT"}
 
-      @delivery_method.deliver!(test_email)
+      delivery_method.deliver!(test_email)
 
-      expect(@delivery_method.payload["recipient"]).to eq("TEST_RECIPIENT")
+      expect(delivery_method.payload["recipient"]).to eq("TEST_RECIPIENT")
     end
 
     it "converts provided recipient to a string" do
       test_email = Mailer.test_email courier_data: {event: "TEST_EVENT", recipient: 12345}
 
-      @delivery_method.deliver!(test_email)
+      delivery_method.deliver!(test_email)
 
-      expect(@delivery_method.payload["recipient"]).to eq("12345")
+      expect(delivery_method.payload["recipient"]).to eq("12345")
     end
 
     it "uses email from to if not provided" do
       test_email = Mailer.test_email to: "to@example.com", courier_data: {event: "TEST_EVENT"}
 
-      @delivery_method.deliver!(test_email)
+      delivery_method.deliver!(test_email)
 
-      expect(@delivery_method.payload["recipient"]).to eq("to@example.com")
+      expect(delivery_method.payload["recipient"]).to eq("to@example.com")
     end
 
     it "generates a recipient if not provided and no to" do
       test_email = Mailer.test_email courier_data: {event: "TEST_EVENT"}
 
-      @delivery_method.deliver!(test_email)
+      delivery_method.deliver!(test_email)
 
-      expect(@delivery_method.payload["recipient"]).to_not be_nil
+      expect(delivery_method.payload["recipient"]).to_not be_nil
     end
   end
 
@@ -60,17 +60,17 @@ describe CourierRails::DeliveryMethod do
     it "accepts the profile to use" do
       test_email = Mailer.test_email courier_data: {event: "TEST_EVENT", profile: {phone_number: "555-555-5555"}}
 
-      @delivery_method.deliver!(test_email)
+      delivery_method.deliver!(test_email)
 
-      expect(@delivery_method.payload["profile"][:phone_number]).to eq("555-555-5555")
+      expect(delivery_method.payload["profile"][:phone_number]).to eq("555-555-5555")
     end
 
     it "accepts to as email in profile" do
       test_email = Mailer.test_email to: "to@example.com", courier_data: {event: "TEST_EVENT"}
 
-      @delivery_method.deliver!(test_email)
+      delivery_method.deliver!(test_email)
 
-      expect(@delivery_method.payload["profile"][:email]).to eq("to@example.com")
+      expect(delivery_method.payload["profile"][:email]).to eq("to@example.com")
     end
   end
 
@@ -78,9 +78,9 @@ describe CourierRails::DeliveryMethod do
     it "accepts the data to use" do
       test_email = Mailer.test_email courier_data: {event: "TEST_EVENT", data: {hello: "test"}}
 
-      @delivery_method.deliver!(test_email)
+      delivery_method.deliver!(test_email)
 
-      expect(@delivery_method.payload["data"][:hello]).to eq("test")
+      expect(delivery_method.payload["data"][:hello]).to eq("test")
     end
   end
 
@@ -88,9 +88,9 @@ describe CourierRails::DeliveryMethod do
     it "accepts the brand to use" do
       test_email = Mailer.test_email courier_data: {event: "TEST_EVENT", brand: "TEST_BRAND"}
 
-      @delivery_method.deliver!(test_email)
+      delivery_method.deliver!(test_email)
 
-      expect(@delivery_method.payload["brand"]).to eq("TEST_BRAND")
+      expect(delivery_method.payload["brand"]).to eq("TEST_BRAND")
     end
   end
 
@@ -98,61 +98,41 @@ describe CourierRails::DeliveryMethod do
     it "will use the provided subject" do
       test_email = Mailer.test_email subject: "Test Subject", courier_data: {event: "TEST_EVENT"}
 
-      @delivery_method.deliver!(test_email)
+      delivery_method.deliver!(test_email)
 
-      expect(@delivery_method.payload[:override][:channel][:email][:subject]).to eq("Test Subject")
+      expect(delivery_method.payload[:override][:channel][:email][:subject]).to eq("Test Subject")
     end
 
     it "will use the provided cc address" do
       test_email = Mailer.test_email cc: "test@example.com", courier_data: {event: "TEST_EVENT"}
 
-      @delivery_method.deliver!(test_email)
+      delivery_method.deliver!(test_email)
 
-      expect(@delivery_method.payload[:override][:channel][:email][:cc]).to eq("test@example.com")
+      expect(delivery_method.payload[:override][:channel][:email][:cc]).to eq("test@example.com")
     end
 
     it "will use the provided bcc address" do
       test_email = Mailer.test_email bcc: "test@example.com", courier_data: {event: "TEST_EVENT"}
 
-      @delivery_method.deliver!(test_email)
+      delivery_method.deliver!(test_email)
 
-      expect(@delivery_method.payload[:override][:channel][:email][:bcc]).to eq("test@example.com")
+      expect(delivery_method.payload[:override][:channel][:email][:bcc]).to eq("test@example.com")
     end
 
     it "will use the provided from address" do
       test_email = Mailer.test_email from: "test@example.com", courier_data: {event: "TEST_EVENT"}
 
-      @delivery_method.deliver!(test_email)
+      delivery_method.deliver!(test_email)
 
-      expect(@delivery_method.payload[:override][:channel][:email][:from]).to eq("test@example.com")
+      expect(delivery_method.payload[:override][:channel][:email][:from]).to eq("test@example.com")
     end
 
     it "will use the provided reply-to address" do
       test_email = Mailer.test_email reply_to: "test@example.com", courier_data: {event: "TEST_EVENT"}
 
-      @delivery_method.deliver!(test_email)
+      delivery_method.deliver!(test_email)
 
-      expect(@delivery_method.payload[:override][:channel][:email][:replyTo]).to eq("test@example.com")
+      expect(delivery_method.payload[:override][:channel][:email][:replyTo]).to eq("test@example.com")
     end
-
-    it "will use the provided html erb template" do
-      test_email = Mailer.test_email html_part: "<h1>Hello, Testing!</h1>", courier_data: {event: "TEST_EVENT"}
-
-      puts test_email[:html_part]
-
-      @delivery_method.deliver!(test_email)
-
-      # puts @delivery_method.payload[:override]
-
-      expect(@delivery_method.payload[:override][:channel][:email][:html]).to eq("<h1>Hello, Testing!</h1>")
-    end
-
-    # it "will use the provided text erb template" do
-    #   test_email = Mailer.test_email text_part: "Hello, Testing!", courier_data: {event: "TEST_EVENT"}
-
-    #   @delivery_method.deliver!(test_email)
-
-    #   expect(@delivery_method.payload[:override][:channel][:email][:text]).to eq("Hello, Testing!")
-    # end
   end
 end

@@ -2,6 +2,7 @@ module CourierRails
   class DeliveryMethod
     require "trycourier"
     require "securerandom"
+    require "courier_rails/action_mailer_courier_transformer"
 
     attr_accessor :settings, :payload, :response
 
@@ -99,10 +100,10 @@ module CourierRails
       email_override[:channel][:email][:bcc] = mail.bcc.first unless mail.bcc.nil?
       email_override[:channel][:email][:from] = mail.from.first unless mail.from.nil?
       email_override[:channel][:email][:replyTo] = mail.reply_to.first unless mail.reply_to.nil?
+      # mail.subject is never nil, defaults to humanized method name
       email_override[:channel][:email][:subject] = mail.subject unless mail.subject.nil?
 
-      email_override[:channel][:email][:html] = mail.html_part.decoded unless mail.html_part.nil?
-      email_override[:channel][:email][:text] = mail.text_part.decoded unless mail.text_part.nil?
+      email_override = ActionMailerCourierTransformer.new.tranform_email_body_for_override(mail, email_override)
 
       @payload[:override] = email_override unless email_override[:channel][:email].empty?
     end

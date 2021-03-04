@@ -10,3 +10,5 @@ gem "rake", "~> 13.0"
 gem "rspec", "~> 3.0"
 
 gem "standard", group: [:development, :test]
+
+gem "pry", group: [:development, :test]
