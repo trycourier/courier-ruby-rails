@@ -43,12 +43,14 @@ data = {
     }
 }
 
-mail(to: "jane@doe.com", body: "not used", courier_data: data)
+mail(to: "jane@doe.com", body: CourierRails::DEFAULT_COURIER_BODY, subject: CourierRails::USE_COURIER_SUBJECT, courier_data: data)
 ```
 
-The "body" parameter is required for ActionMailer, even though the email body is already described by the notification designer. You can also add `default body: not used` to the top of your mailer instead of this parameter.
+The `body` parameter is required for ActionMailer, even though the email body is already described by the notification designer. You can also add `default body: CourierRails::DEFAULT_COURIER_BODY` to the top of your mailer instead of this parameter.
 
-The elements of "courier_data" are described below:
+Since the `subject` will never be nil, we need to provide it with `CourierRails::USE_COURIER_SUBJECT` to ensure it uses the subject from the Courier template. Any value you pass as the subject will becoming the subject of the message. You can also add `default subject: CourierRails::USE_COURIER_SUBJECT` to the top of your mailer instead of this parameter.
+
+The elements of `courier_data` are described below:
 
 ### event (required)
 
@@ -65,14 +67,14 @@ An object that includes the profile data attached to this message. For example,
 ```ruby
 c_data={
     event: "your.event.key"
-    profile:{
+    profile: {
         phone_number: "555-123-4567",
         name: "Jane Doe"
         email: "jane@doe.com"
         ...
     }
 }
-mail(body: "not used", courier_data: c_data)
+mail(body: CourierRails::DEFAULT_COURIER_BODY, courier_data: c_data)
 ```
 
 As shown above, the recipient's email can be set inside of the profile instead of using the ActionMailer `to:"email"` parameter. When both are used, however, the "to" parameter overrides the profile email.
@@ -88,6 +90,18 @@ result = MyMailer.welcome_message(user).deliver!
 puts result.code # Status Code
 puts result.message_id # Message ID
 ```
+
+## Email Overrides
+
+Providing the following parameters to the mailer object will override values used by Courier:
+
+- `cc` - Carbon Copy Email Address
+- `bcc` - Blind Carbon Copy Email Address
+- `from` - From Email Address
+- `reply_to` - Reply To Email Address
+- `subject` - Email Subject
+
+If you provide ERB email templates, these will replace the email body used for the email and providing `body: CourierRails::DEFAULT_COURIER_BODY` in the mailer object is no longer necessary.
 
 ## Development
 
