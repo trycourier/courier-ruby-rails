@@ -95,12 +95,28 @@ describe CourierRails::DeliveryMethod do
   end
 
   context "Override" do
+    it "will not include override on payload if nothing to override" do
+      test_email = Mailer.test_email courier_data: {event: "TEST_EVENT"}
+
+      delivery_method.deliver!(test_email)
+
+      expect(delivery_method.payload.has_key?(:override)).to be false
+    end
+
     it "will use the provided subject" do
       test_email = Mailer.test_email subject: "Test Subject", courier_data: {event: "TEST_EVENT"}
 
       delivery_method.deliver!(test_email)
 
       expect(delivery_method.payload[:override][:channel][:email][:subject]).to eq("Test Subject")
+    end
+
+    it "will not use the default subject" do
+      test_email = Mailer.test_email subject: CourierRails::USE_COURIER_SUBJECT, cc: "test@example.com", courier_data: {event: "TEST_EVENT"}
+
+      delivery_method.deliver!(test_email)
+
+      expect(delivery_method.payload[:override][:channel][:email].keys).not_to include(:subject)
     end
 
     it "will use the provided cc address" do
