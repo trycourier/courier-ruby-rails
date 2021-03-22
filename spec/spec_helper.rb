@@ -26,9 +26,25 @@ end
 
 # A default mailer to generate the mail object
 class Mailer < ActionMailer::Base
-  default body: "not used"
+  default body: CourierRails::DEFAULT_COURIER_BODY
+  default subject: CourierRails::USE_COURIER_SUBJECT
 
   def test_email(options = {})
-    mail(options)
+    if options.has_key?(:html_part) && options.has_key?(:text_part)
+      mail(options) do |format|
+        format.text { render plain: options[:text_part] }
+        format.html { render plain: options[:html_part] }
+      end
+    elsif options.has_key?(:html_part)
+      mail(options) do |format|
+        format.html { render plain: options[:html_part] }
+      end
+    elsif options.has_key?(:text_part)
+      mail(options) do |format|
+        format.text { render plain: options[:text_part] }
+      end
+    else
+      mail(options)
+    end
   end
 end

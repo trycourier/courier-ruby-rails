@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name = "courier_rails"
   spec.version = CourierRails::VERSION
   spec.authors = ["Aydrian Howard"]
-  spec.email = ["aydrian@trycourier.com"]
+  spec.email = ["aydrian@courier.com"]
 
   spec.summary = "Courier for Rails"
   spec.description = "Delivery Method for Rails ActionMailer to send notifications using the Courier API"

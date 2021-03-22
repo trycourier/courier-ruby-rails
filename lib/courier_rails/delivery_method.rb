@@ -2,6 +2,7 @@ module CourierRails
   class DeliveryMethod
     require "trycourier"
     require "securerandom"
+    require "courier_rails/action_mailer_courier_transformer"
 
     attr_accessor :settings, :payload, :response
 
@@ -19,6 +20,8 @@ module CourierRails
       prepare_profile_from mail, courier_data
       prepare_data_from courier_data
       prepare_brand_from courier_data
+
+      prepare_override_from mail
 
       perfom_send_request
     end
@@ -67,6 +70,42 @@ module CourierRails
 
     def prepare_brand_from(courier_data)
       @payload["brand"] = courier_data[:brand] if courier_data.has_key?(:brand)
+    end
+
+    # mail TODO
+    # :subject, :to, :from, :cc, :bcc, :reply_to
+    ##
+    # "override": {
+    #   "channel": {
+    #     "email": {
+    #       "cc": "seth+cc@courier.com",
+    #       "bcc": "seth+bcc@courier.com",
+    #       "from": "seth+bcc@courier.com.com",
+    #       "replyTo": "seth+replyto@courier.com",
+    #       "subject": "muh subject",
+    #       "html": "<html><body><div>muh html</div></body></html>",
+    #       "text": "muh text"
+    #     }
+    #   }
+    # }
+    #
+    def prepare_override_from(mail)
+      email_override = {
+        channel: {
+          email: {}
+        }
+      }
+
+      email_override[:channel][:email][:cc] = mail.cc.first unless mail.cc.nil?
+      email_override[:channel][:email][:bcc] = mail.bcc.first unless mail.bcc.nil?
+      email_override[:channel][:email][:from] = mail.from.first unless mail.from.nil?
+      email_override[:channel][:email][:replyTo] = mail.reply_to.first unless mail.reply_to.nil?
+      # mail.subject is never nil, defaults to humanized method name
+      email_override[:channel][:email][:subject] = mail.subject unless mail.subject == USE_COURIER_SUBJECT
+
+      email_override = ActionMailerCourierTransformer.new.tranform_email_body_for_override(mail, email_override)
+
+      @payload[:override] = email_override unless email_override[:channel][:email].empty?
     end
 
     def perfom_send_request
