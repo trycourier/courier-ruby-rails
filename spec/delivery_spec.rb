@@ -1,9 +1,6 @@
 require_relative "spec_helper"
 
 describe CourierRails::DeliveryMethod do
-  # before(:each) do
-  #   @delivery_method = CourierRails::DeliveryMethod.new
-  # end
   let(:delivery_method) { CourierRails::DeliveryMethod.new }
 
   context "Event" do

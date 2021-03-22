@@ -1,10 +1,9 @@
+require "json"
+require "ostruct"
 require "rspec"
 require "courier_rails/action_mailer_courier_transformer"
 
 def mockMailObject(obj)
-  require "json"
-  require "ostruct"
-
   json = obj.to_json
   JSON.parse(json, object_class: OpenStruct)
 end
